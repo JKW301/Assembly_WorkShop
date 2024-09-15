@@ -4,18 +4,27 @@
 
 ## Étape 1
 
-- Exécutez la commande suivante pour rendre le script exécutable :
+Installez les paquets nécessaires. (nb: la commande eput différer d'une distro Linux à une autre):
+```bash
+sudo apt install gcc nasm -y
+```
+Pour le debug, il est intéréssant d'installer EDB :
+```bash 
+sudo apt install edb-debugger -y
+```
+
+A la racine du repo se trouve un script pour générer un exécutable depuis un fichier asm. Exécutez la commande suivante pour rendre le script exécutable :
   ```bash
-  chmod +x compile64
+  sudo chmod +x compile64
   ```
-- Copiez le script dans `/usr/local/bin` pour qu'il soit disponible globalement :
+Copiez le script dans `/usr/local/bin` pour qu'il soit disponible globalement :
   ```bash
   sudo cp compile64 /usr/local/bin
   ```
-- Rechargez :
-    ```bash
-    source ~./bashrc
-    ```
+Rechargez avec :
+```bash
+source ~./bashrc
+```
 
 ## Étape 2
 
