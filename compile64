@@ -1,41 +1,14 @@
 #!/bin/bash
 
-# Vérification du nombre d'arguments
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <nom_du_fichier_asm>"
-    exit 1
+# Script de compilation pour programme en assembleur NASM utilisant 'main'
+
+file_base=$(basename $1 .asm)
+nasm -felf64 -o ${file_base}.o ${file_base}.asm
+gcc -m64 -no-pie -o ${file_base}_executable ${file_base}.o
+
+if [ $? -eq 0 ]; then
+    echo "Compilation réussie. Exécutable généré : ${file_base}_executable"
+    rm ${file_base}.o
+else
+    echo "Erreur lors de la compilation."
 fi
-
-# Extraction du nom du fichier sans l'extension
-filename=$(basename -- "$1")
-extension="${filename##*.}"
-filename="${filename%.*}"
-
-# Vérifie que l'extension est bien .asm
-if [ "$extension" != "asm" ]; then
-    echo "Erreur : Le fichier doit avoir l'extension .asm"
-    exit 1
-fi
-
-# Vérification si le fichier existe
-if [ ! -f "$1" ]; then
-    echo "Erreur : le fichier $1 n'existe pas"
-    exit 1
-fi
-
-# Assemblage du fichier .asm en fichier objet .o
-nasm -f elf64 -o "${filename}.o" "$1"
-if [ $? -ne 0 ]; then
-    echo "Erreur lors de l'assemblage avec NASM"
-    exit 1
-fi
-
-# Lier le fichier objet avec GCC sans utiliser les fichiers de démarrage
-gcc -m64 -nostartfiles -no-pie -o "${filename}_executable" "${filename}.o"
-if [ $? -ne 0 ]; then
-    echo "Erreur lors du linkage avec GCC"
-    exit 1
-fi
-
-# Affichage de succès
-echo "Compilation réussie. Exécutable généré : ${filename}_executable"
