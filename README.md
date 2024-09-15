@@ -25,6 +25,7 @@ Rechargez avec :
 ```bash
 source ~./bashrc
 ```
+La commande `compile64` devrait fonctionner.
 
 ## Étape 2
 
