@@ -44,6 +44,33 @@ Dans les programmes en assembleur utilisant la convention **System V AMD64 ABI**
 Si **`rax`** contient une valeur différente de zéro, les fonctions pourraient chercher des arguments flottants qui n'existent pas, causant des comportements inattendus. Répéter **`mov rax, 0`** est donc nécessaire pour ces appels.
 Cela garantit le bon fonctionnement des fonctions sans arguments flottants.
 
+Voici une sous-partie pour expliquer le fonctionnement de **`extern printf`** et **`extern scanf`** dans un programme en assembleur :
+
+## Utilisation de `extern printf` et `extern scanf`
+
+En assembleur, les fonctions `printf` et `scanf` sont définies dans des bibliothèques externes (comme `libc` en C). Pour les utiliser, il faut les déclarer en tant que fonctions externes dans le programme en assembleur avec la directive `extern`.
+
+```asm
+extern printf
+extern scanf
+```
+
+Cela permet au compilateur de comprendre que ces fonctions sont définies ailleurs (dans les bibliothèques C) et doivent être liées lors de la compilation avec `gcc`.
+
+- **`printf`** : Utilisé pour afficher du texte ou des valeurs. Les paramètres (comme les chaînes de format) sont passés dans les registres.
+- **`scanf`** : Utilisé pour lire les entrées de l'utilisateur. Les adresses des variables où stocker les entrées sont passées en paramètres.
+
+Exemple d'appel :
+```asm
+mov rdi, format_string    ; Format pour printf
+mov rsi, variable         ; Variable à afficher
+mov rax, 0                ; Aucun argument flottant
+call printf
+```
+
+Ces fonctions externes facilitent l'interaction avec l'utilisateur dans les programmes en assembleur.
+
+
 ## Directives `define` en assembleur NASM
 
 Les directives `define` en NASM sont utilisées pour réserver de l'espace en mémoire pour des données de tailles spécifiques. Voici un récapitulatif des principales directives utilisées pour définir des variables de différentes tailles :
